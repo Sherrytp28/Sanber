@@ -4,91 +4,89 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
-class TestLogin(unittest.TestCase): 
 
-    def setUp(self): 
+
+class TestLogin(unittest.TestCase):
+    def setUp(self) :
         self.browser = webdriver.Chrome(ChromeDriverManager().install())
-  
-        
-    def test_a_success_login(self): 
-        # steps
-        browser = self.browser #buka web browser
-        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+    def test_a_sukses_login(self):
+        #step
+        browser = self.browser   
+        browser.get("http://barru.pythonanywhere.com/daftar")
         time.sleep(3)
-        browser.find_element(By.XPATH,"/html/body/div/div[2]/form/input[1]").send_keys("putristp23@gmail.com") # isi email
+        browser.find_element(By.ID,"email").send_keys("putristp23@gmai.com")
         time.sleep(1)
-        browser.find_element(By.CSS_SELECTOR,"input#password").send_keys("Stp123") # isi password
+        browser.find_element(By.ID,"password").send_keys("Stp123")
         time.sleep(1)
-        browser.find_element(By.ID,"signin_login").click() # klik tombol sign in
-        time.sleep(1)
+        browser.find_element(By.ID,"signin_login").click
 
-        # validasi
+        #Validasi
         response_data = browser.find_element(By.ID,"swal2-title").text
         response_message = browser.find_element(By.ID,"swal2-content").text
 
         self.assertIn('Welcome', response_data)
-        self.assertEqual(response_message, 'Yes Berhasil Login')
+        self.assertEqual(response_message, 'Anda Berhasil Login')
 
-    def test_a_failed_login_with_empty_password(self): 
-        # steps
-        browser = self.browser #buka web browser
-        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+    def test_b_gagal_login_empty(self):
+        #step
+        browser = self.browser   
+        browser.get("http://barru.pythonanywhere.com/daftar")
         time.sleep(3)
-        browser.find_element(By.XPATH,"/html/body/div/div[2]/form/input[1]").send_keys("putristp@gmai.com") # isi email
+        browser.find_element(By.ID,"email").send_keys("")
         time.sleep(1)
-        browser.find_element(By.CSS_SELECTOR,"input#password").send_keys("12345") # isi password
+        browser.find_element(By.ID,"password").send_keys("")
         time.sleep(1)
-        browser.find_element(By.ID,"signin_login").click() # klik tombol sign in
-        time.sleep(1)
+        browser.find_element(By.ID,"signin_login").click
 
-        # validasi
+        #Validasi
         response_data = browser.find_element(By.ID,"swal2-title").text
         response_message = browser.find_element(By.ID,"swal2-content").text
 
-        self.assertIn('not found', response_data)
-        self.assertEqual(response_message, 'Yah,Email atau Password Anda Salah!!')
+        self.assertIn('Welcome', response_data)
+        self.assertEqual(response_message, 'Anda Berhasil Login')
 
-    def test_a_failed_login_with_empty_email_and_password(self): 
-        # steps
-        browser = self.browser #buka web browser
-        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+    def test_c_gagal_login(self):
+        #step
+        browser = self.browser   
+        browser.get("http://barru.pythonanywhere.com/daftar")
         time.sleep(3)
-        browser.find_element(By.XPATH,"/html/body/div/div[2]/form/input[1]").send_keys("") # isi email
+        browser.find_element(By.ID,"email").send_keys("putristp23@gmai.com")
         time.sleep(1)
-        browser.find_element(By.CSS_SELECTOR,"input#password").send_keys("") # isi password
+        browser.find_element(By.ID,"password").send_keys("12345")
         time.sleep(1)
-        browser.find_element(By.ID,"signin_login").click() # klik tombol sign in
-        time.sleep(1)
+        browser.find_element(By.ID,"signin_login").click
 
-        # validasi
+        #Validasi
         response_data = browser.find_element(By.ID,"swal2-title").text
         response_message = browser.find_element(By.ID,"swal2-content").text
 
-        self.assertIn('tidak valid', response_data)
-        self.assertEqual(response_message, 'Cek kembali email anda')
+        self.assertIn('Welcome', response_data)
+        self.assertEqual(response_message, 'Anda Berhasil Login')
 
-    def test_a_failed_signup(self): 
-        # steps
-        browser = self.browser #buka web browser
-        browser.get("http://barru.pythonanywhere.com/daftar") # buka situs
+    def signup_a(self):
+        #step
+        browser = self.browser   
+        browser.get("http://barru.pythonanywhere.com/daftar")
         time.sleep(3)
-        browser.find_element(By.XPATH,"/html/body/div/div[2]/form/input[1]").send_keys("") # isi Nama
+        browser.find_element(By.ID,"name_register").send_keys("seokjin")
         time.sleep(1)
-        browser.find_element(By.XPATH,"/html/body/div/div[2]/form/input[2]").send_keys("putristp23@gmail.com") # isi email
+        browser.find_element(By.ID,"email_register").send_keys("seokjin23@gmai.com")
         time.sleep(1)
-        browser.find_element(By.CSS_SELECTOR,"input#password").send_keys("Stp123") # isi password
+        browser.find_element(By.ID,"password_register").send_keys("Jin123")
         time.sleep(1)
-        browser.find_element(By.ID,"signup").click() # klik tombol sign up
-        time.sleep(1)
+        browser.find_element(By.ID,"signup_register").click
 
-        # validasi
+        #Validasi
         response_data = browser.find_element(By.ID,"swal2-title").text
         response_message = browser.find_element(By.ID,"swal2-content").text
 
-        self.assertIn('oh no', response_data)
-        self.assertEqual(response_message, 'yah gagal silakan coba lagi')  
+        self.assertIn('berhasil', response_data)
+        self.assertEqual(response_message, 'Created user!')
+
     def tearDown(self): 
         self.browser.close() 
-        
+
+
+
 if __name__ == "__main__": 
     unittest.main()
